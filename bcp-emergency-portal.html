@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBH BCP Emergency Client</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .emergency-header {
+            background: #d32f2f;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .download-section {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #2196f3;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 10px 10px 10px 0;
+        }
+        .button:hover {
+            background: #1976d2;
+        }
+        .emergency-button {
+            background: #d32f2f;
+            font-size: 18px;
+            padding: 20px 40px;
+        }
+        .emergency-button:hover {
+            background: #b71c1c;
+        }
+        .contacts {
+            background: #fff3e0;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ff9800;
+        }
+        .step {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 3px solid #2196f3;
+        }
+        .warning {
+            background: #fff8e1;
+            border: 1px solid #ffb300;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="emergency-header">
+            <h1>🚨 CBH BCP Emergency Client</h1>
+            <p>Immediate Access for Business Continuity Incidents</p>
+        </div>
+
+        <div class="download-section">
+            <h2>🚀 Instant Launch (Recommended)</h2>
+            <p><strong>For immediate emergency access, copy and paste this into Terminal:</strong></p>
+            <div style="background: #000; color: #00ff00; padding: 15px; border-radius: 5px; font-family: monospace; margin: 10px 0;">
+                curl -s http://10.1.21.3:5000/bcp-launcher.sh | bash
+            </div>
+            <p><em>This will automatically download and launch the BCP client.</em></p>
+        </div>
+
+        <h2>📥 Manual Download Options</h2>
+
+        <div class="step">
+            <h3>Option 1: Ready-to-Run Apps</h3>
+            <a href="#" class="button emergency-button" onclick="downloadFile('CBH BCP Mac Client-1.0.0.dmg')">
+                📦 Download for Intel Macs
+            </a>
+            <a href="#" class="button emergency-button" onclick="downloadFile('CBH BCP Mac Client-1.0.0-arm64.dmg')">
+                📦 Download for Apple Silicon Macs
+            </a>
+            <p><em>Double-click the downloaded DMG file to install.</em></p>
+        </div>
+
+        <div class="step">
+            <h3>Option 2: Network Access</h3>
+            <ol>
+                <li>Press <kbd>Cmd+K</kbd> in Finder</li>
+                <li>Enter: <code>smb://10.1.21.3</code></li>
+                <li>Username: <code>BCP-Admin-Test</code></li>
+                <li>Navigate to: <code>CBH-BCP-Direct-Access</code></li>
+                <li>Double-click: <code>CBH BCP Mac Client.app</code></li>
+            </ol>
+        </div>
+
+        <div class="warning">
+            <h3>⚠️ Security Notice</h3>
+            <p>If macOS shows security warnings:</p>
+            <ul>
+                <li><strong>Right-click</strong> the app and select <strong>"Open"</strong></li>
+                <li>Or go to <strong>System Preferences → Security & Privacy</strong> and click <strong>"Allow"</strong></li>
+            </ul>
+        </div>
+
+        <div class="contacts">
+            <h2>📞 Emergency Support</h2>
+            <ul>
+                <li><strong>BCP Coordinator:</strong> 1-800-BCP-HELP</li>
+                <li><strong>IT Emergency:</strong> 1-800-HELP-CBH</li>
+                <li><strong>Security Team:</strong> 1-800-SEC-TEAM</li>
+            </ul>
+        </div>
+
+        <div style="margin-top: 30px; text-align: center; color: #666;">
+            <p><strong>CBH BCP Emergency Client v1.0.0</strong></p>
+            <p>Last Updated: September 30, 2025</p>
+        </div>
+    </div>
+
+    <script>
+        function downloadFile(filename) {
+            // Try different download URLs
+            const urls = [
+                `http://10.1.21.3:5000/files/BCP-Folder-PHI-Test/${filename}`,
+                `http://10.1.21.3:5000/download/${filename}`,
+                `http://10.1.21.3:5000/webman/3rdparty/FileStation/file_share.cgi?api=SYNO.FileStation.Download&version=2&method=download&path=/BCP-Folder-PHI-Test/${filename}`
+            ];
+            
+            // Try the first URL
+            window.location.href = urls[0];
+            
+            // Show fallback instructions if download doesn't start
+            setTimeout(() => {
+                alert(`If download doesn't start automatically:\n\n1. Connect to NAS via Finder: smb://10.1.21.3\n2. Navigate to BCP-Folder-PHI-Test\n3. Download: ${filename}\n\nOr contact IT Support: 1-800-HELP-CBH`);
+            }, 3000);
+        }
+
+        // Show connection status
+        window.onload = function() {
+            // Test if we can reach the NAS
+            fetch('http://10.1.21.3:5000/')
+                .then(response => {
+                    if (response.ok) {
+                        console.log('✅ NAS connection successful');
+                    }
+                })
+                .catch(error => {
+                    const warning = document.createElement('div');
+                    warning.innerHTML = `
+                        <div style="background: #ffebee; border: 2px solid #f44336; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                            <h3 style="color: #d32f2f;">⚠️ Connection Issue</h3>
+                            <p>Cannot reach emergency server. Please ensure:</p>
+                            <ul>
+                                <li>You are connected to corporate VPN</li>
+                                <li>You have network access to 10.1.21.3</li>
+                            </ul>
+                            <p><strong>Contact IT Emergency: 1-800-HELP-CBH</strong></p>
+                        </div>
+                    `;
+                    document.querySelector('.container').insertBefore(warning, document.querySelector('.download-section'));
+                });
+        };
+    </script>
+</body>
+</html>

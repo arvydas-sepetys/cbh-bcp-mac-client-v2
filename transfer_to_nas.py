@@ -144,9 +144,18 @@ def transfer_file(local_path: Path, nas_host: str, nas_username: str, nas_passwo
     
     scp_cmd.append("scp")
     
+    # Use legacy SCP protocol to avoid SFTP subsystem issues
+    scp_cmd.append("-O")
+    
     # Add port if specified
     if port:
         scp_cmd.extend(["-P", str(port)])
+    
+    # Add SSH options for reliability
+    scp_cmd.extend([
+        "-o", "StrictHostKeyChecking=no",
+        "-o", "UserKnownHostsFile=/dev/null"
+    ])
     
     # Add source and destination
     scp_cmd.extend([
